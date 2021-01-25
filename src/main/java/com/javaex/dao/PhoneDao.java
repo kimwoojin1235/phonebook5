@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,37 @@ public class PhoneDao {
 		System.out.println(phoneVo.toString());
 		return phoneVo;
 	}
+	
+	
+	public  Map<String, Object> getPerson2(int personid) {		
+		System.out.println("dao:getPerson2"+personid);
+		Map<String, Object>personMap = sqlSession.selectOne("phonebook.selectOne2",personid);
+		/*
+		String name =(String)personMap.get("name");
+		System.out.println(name);
+		int id =Integer.parseInt(String valueof(personMap.get("personid"));
+		System.out.println(id);
+		*/
+		return personMap;
+	}
+	
+	
+	
+	
+	
 	//수정하기
 	public void personUpdate(PhoneVo phoneVo) {
 		sqlSession.update("phonebook.update",phoneVo);
+	}
+	public int personUpdate2(int personid, String name,String hp,String company) {
+		System.out.println("dao:personUpdate2"+","+personid +","+name+","+hp+","+company);
+		//Vo 대신 --> map사용 map으로 묶었다.
+		Map<String, Object>personMap =new HashMap<String,Object>();
+		personMap.put("id", personid);
+		personMap.put("name", name);
+		personMap.put("hp", hp);
+		personMap.put("company", company);
+		System.out.println(personMap.toString());
+		return sqlSession.update("phonebook.update2",personMap);
 	}
 }

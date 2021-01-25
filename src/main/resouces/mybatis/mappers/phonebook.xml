@@ -12,6 +12,7 @@
 	</resultMap>
 	<!--컬럼의 이름들이 미묘하게 다른 것들이 많을때 사용하면 편하다 -->
 	<!--지금이야 컬럼이 몇개되지 않지만 실무에서는 아니기 때문에 이방식이 편함 -->
+	
 	<!--전체리스트 가지고 오기 resultMap -->
 	<select id="selectlist2" resultMap="resultMapPersonVo">
 		<![CDATA[
@@ -53,8 +54,11 @@
 		<!-- 괄호 안에 있는 값은 get으로 변환이 된다. -->-->
 	</insert>
 	
+	
+	
 	<!-- 전화번호 삭제 -->
 	<delete id="delete" parameterType="int">
+	<!-- 파라미터를 숫자로 받기 때문에 int인것 -->
 		<![CDATA[
 			delete from person
 		    WHERE person_id = #{personid}
@@ -62,7 +66,7 @@
 	</delete>
 	
 	<!-- 전화번호 수정 -->
-	<update id="update" parameterType="com.javaex.vo.PhoneVo">
+	<update id="update" parameterType="PersonVo">
 		<![CDATA[
 		UPDATE person
 		SET name = #{name},
@@ -71,9 +75,20 @@
 		WHERE person_id=#{personid}
 		]]>
 	</update>
+	<!-- 전화번호 수정2 -->
+	<update id="update2" parameterType="map">
+	<!-- 여기서 #{}안에 있는 값은 키값이다 그러므로 오는 이름 그대로 적어 넣어야 한다. -->
+		<![CDATA[
+		UPDATE person
+		SET name = #{name},
+    		hp = #{hp},
+    		company=#{company}
+		WHERE person_id=#{id}
+		]]>
+	</update>
 	
  	<!-- 한명의 데이터를 가지고 온다 -->
-	<select id="selectOne" parameterType="int" resultType="com.javaex.vo.PhoneVo">
+	<select id="selectOne" parameterType="int" resultType="PersonVo">
 		<![CDATA[
 			SELECT  person_id personid,
 		            name,
@@ -83,6 +98,16 @@
 			WHERE person_id = #{personid}
 		]]>
 	</select>
-	
+	<!-- 한명의 데이터를 가지고 온다2 -->
+	<select id="selectOne2" parameterType="int" resultType="map">
+		<![CDATA[
+				SELECT  person_id personid,
+			            name name,
+			        	hp hp,
+			        	company company
+				FROM person
+				WHERE person_id = #{personid}
+			]]>
+	</select>
 	
 </mapper>

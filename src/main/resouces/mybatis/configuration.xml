@@ -3,7 +3,9 @@
 
 <configuration>
     <typeAliases>
+     	<typeAlias alias="PersonVo" type="com.javaex.vo.PhoneVo" />
     </typeAliases>
+    <!-- 별명을 쓰겠다는 의미 -->
 
     <mappers>
         <mapper resource="mybatis/mappers/phonebook.xml" />

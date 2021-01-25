@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.websocket.server.PathParam;
 
@@ -86,11 +87,34 @@ public class PhoneController {
 	  //수정-->modify-->@ModelAttribute 사용 파라미터를 다 담아줌
 	  //PhoneVo안에 있는걸 다 가져와서 사용이 가능함
 	  
+	  @RequestMapping(value = "/modifyForm2",method ={RequestMethod.GET,RequestMethod.POST}) 
+	  public String modifyForm2(Model model, @RequestParam("id") int personId) {
+	  System.out.println("수정폼입니다.");
+	  System.out.println(personId);
+	  Map<String, Object> personMap = phoneDao.getPerson2(personId);
+	  model.addAttribute("pMap",personMap);
+
+	  return "updateForm2"; 
+	  } 
+	  
 	  @RequestMapping(value = "/modify",method ={RequestMethod.GET,RequestMethod.POST})
 	  public String modify2(@ModelAttribute PhoneVo phoneVo) { 
 	  phoneDao.personUpdate(phoneVo);
 	  return "redirect:/phone/list"; 
 	  } // 수정-->modify 기존의 방법으로 한것 주석
+	  @RequestMapping(value = "/modify2",method ={RequestMethod.GET,RequestMethod.POST})
+	  public String modify2(@RequestParam("personid") int personid,
+			  				@RequestParam("name") String name,
+			  				@RequestParam("hp") String hp,
+			  				@RequestParam("company") String company) {
+		  System.out.println("modify2");
+		  System.out.println(personid +","+name+","+hp+","+company);
+		  int count=phoneDao.personUpdate2(personid,name,hp,company);
+		  return "redirect:/phone/list"; 
+	  }
+	  
+	  
+	  
 	  /*
 	  @RequestMapping(value = "/modify",method ={RequestMethod.GET,RequestMethod.POST}) 
 	  public Stringmodify(@RequestParam("id") int personid, @RequestParam("name") String
