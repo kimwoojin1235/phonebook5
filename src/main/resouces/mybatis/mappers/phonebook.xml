@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phonebook">
+	<!-- personvo map -->
+	<resultMap id="resultMapPersonVo"
+		type="com.javaex.vo.PhoneVo">
+		<result column="person_id" property="personid" />
+		<result column="name" property="name" />
+		<result column="hp" property="hp" />
+		<result column="company" property="company" />
+	</resultMap>
+	<!--컬럼의 이름들이 미묘하게 다른 것들이 많을때 사용하면 편하다 -->
+	<!--지금이야 컬럼이 몇개되지 않지만 실무에서는 아니기 때문에 이방식이 편함 -->
+	<!--전체리스트 가지고 오기 resultMap -->
+	<select id="selectlist2" resultMap="resultMapPersonVo">
+		<![CDATA[
+		SELECT  person_id,
+        		name,
+        		hp,
+        		company
+		FROM person
+		ORDER by person_id DESC
+		]]>
+		<!--CDATA안에서는 <를 다른걸로 착각하지 않는다. -->
+		<!--이름이 vo와 다르면 as를 하거나 컬럼의 이름을 바꿔주면 해결이 된다. -->
+	</select>
+
+
+	<!--전체리스트 가지고 오기 -->
+	<select id="selectlist" resultType="com.javaex.vo.PhoneVo">
+		<![CDATA[
+		SELECT  person_id as personid,
+        		name,
+        		hp,
+        		company
+		FROM person
+		ORDER by person_id DESC
+		]]>
+		<!--CDATA안에서는 <를 다른걸로 착각하지 않는다. -->
+		<!--이름이 vo와 다르면 as를 하거나 컬럼의 이름을 바꿔주면 해결이 된다. -->
+	</select>
+	
+	<!-- 전화번호 저장 -->
+	<insert id="insert" parameterType="com.javaex.vo.PhoneVo">
+		<![CDATA[
+			INSERT INTO person
+			VALUES(SEQ_PERSON_ID.nextval,
+				   #{name},
+				   #{hp},
+				   #{company})
+		]]>
+		<!-- 괄호 안에 있는 값은 get으로 변환이 된다. -->-->
+	</insert>
+	
+	<!-- 전화번호 삭제 -->
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			delete from person
+		    WHERE person_id = #{personid}
+		]]>
+	</delete>
+	
+	<!-- 전화번호 수정 -->
+	<update id="update" parameterType="com.javaex.vo.PhoneVo">
+		<![CDATA[
+		UPDATE person
+		SET name = #{name},
+    		hp = #{hp},
+    		company=#{company}
+		WHERE person_id=#{personid}
+		]]>
+	</update>
+	
+ 	<!-- 한명의 데이터를 가지고 온다 -->
+	<select id="selectOne" parameterType="int" resultType="com.javaex.vo.PhoneVo">
+		<![CDATA[
+			SELECT  person_id personid,
+		            name,
+		        	hp,
+		        	company
+			FROM person
+			WHERE person_id = #{personid}
+		]]>
+	</select>
+	
+	
+</mapper>
